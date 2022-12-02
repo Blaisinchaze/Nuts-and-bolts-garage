@@ -5,13 +5,15 @@ using UnityEngine;
 public class OutlineController : MonoBehaviour
 {
     public static OutlineController Instance;
-    private Vector3 moveToLocation;
+    private Vector3Int moveToLocation;
     private float speed = 5;
     private bool move;
+    GameObject followTarget;
     // Start is called before the first frame update
     void Start()
     {
         Instance = this;
+        followTarget = GameObject.FindGameObjectWithTag("FollowTarget");
     }
 
     // Update is called once per frame
@@ -22,14 +24,7 @@ public class OutlineController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!move) return;
-        transform.position = Vector3.MoveTowards(transform.position, moveToLocation, speed * Time.deltaTime);
-        if (transform.position == moveToLocation) move = false;
-    }
-
-    public void UpdateOutlineMoveToLocation(Vector3 _moveToVector)
-    {
-        moveToLocation = _moveToVector;
-        move = true;
+        if(transform.position != followTarget.transform.position)
+            transform.position = Vector3.MoveTowards(transform.position, followTarget.transform.position, speed * Time.deltaTime);
     }
 }
